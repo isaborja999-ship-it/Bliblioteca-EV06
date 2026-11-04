@@ -48,7 +48,7 @@ void ShowLoansMenu()
 {
     Console.WriteLine("--------- MENU PRÉSTAMOS ---------");
     Console.WriteLine("3.1 Crear préstamo");
-    Console.WriteLine("3.2 Listar préstamos");
+    Console.WriteLine("3.2 Listar préstamos (todos, activos y cerrados)");
     Console.WriteLine("    • 3.2.1 Todos");
     Console.WriteLine("    • 3.2.2 Activos");
     Console.WriteLine("    • 3.2.3 Cerrados");
