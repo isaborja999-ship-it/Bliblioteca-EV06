@@ -35,7 +35,7 @@ void ShowUsersMenu()
     Console.WriteLine("2.1 Registrar usuario");
     Console.WriteLine("2.2 Listar usuarios");
     Console.WriteLine("2.3 Ver detalle (por ID/documento)");
-    Console.WriteLine("2.4 Actualizar usuario");
+    Console.WriteLine("2.4 Actualizar usuario (nombre, contacto y estado)");
     Console.WriteLine("    • 2.4.1 Editar nombre");
     Console.WriteLine("    • 2.4.2 Editar contacto");
     Console.WriteLine("    • 2.4.3 Activar / desactivar");
