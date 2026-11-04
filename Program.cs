@@ -97,12 +97,12 @@ bool ConfirmAction(string actionMessage)
 
 bool ConfirmResetData()
 {
-    return ConfirmAction("¿Desea reiniciar los datos?");
+    return ConfirmAction("¿Desea reiniciar los datos? (confirmación S/N)");
 }
 
 bool ConfirmExitAndSave()
 {
-    return ConfirmAction("¿Guardar antes de salir?");
+    return ConfirmAction("¿Guardar antes de salir? (confirmación S/N)");
 }
 
 void RegisterBook()
