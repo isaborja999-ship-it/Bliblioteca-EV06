@@ -64,7 +64,7 @@ void ShowSearchReportsMenu()
     Console.WriteLine("--------- BÚSQUEDAS Y REPORTES ---------");
     Console.WriteLine("4.1 Buscar libro");
     Console.WriteLine("4.2 Buscar usuario");
-    Console.WriteLine("4.3 Reportes");
+    Console.WriteLine("4.3 Reportes (usuario, libro, vencidos y resumen)");
     Console.WriteLine("    • 4.3.1 Por usuario");
     Console.WriteLine("    • 4.3.2 Por libro");
     Console.WriteLine("    • 4.3.3 Vencidos");
