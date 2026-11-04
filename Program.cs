@@ -78,7 +78,7 @@ void ShowPersistenceMenu()
     Console.WriteLine("--------- GUARDAR / CARGAR DATOS ---------");
     Console.WriteLine("5.1 Guardar datos");
     Console.WriteLine("5.2 Cargar datos");
-    Console.WriteLine("5.3 Reiniciar datos");
+    Console.WriteLine("5.3 Reiniciar datos con confirmación S/N");
     Console.WriteLine("0. Volver");
     Console.WriteLine("9. Salir");
 }
