@@ -1,4 +1,5 @@
 ﻿using System;
+using Biblioteca_EV06.Models;
 
 void ShowMainMenu()
 {
@@ -9,6 +10,49 @@ void ShowMainMenu()
     Console.WriteLine("4. Búsquedas y reportes");
     Console.WriteLine("5. Guardar / Cargar datos");
     Console.WriteLine("6. Salir");
+    Console.WriteLine("7. Demostrar modelos (prueba)");
+}
+
+void DemostrarObjetosPrueba()
+{
+    var libro1 = new Libro(1, "978-958-42-1234-5", "Cien años de soledad", "Gabriel García Márquez", "Novela", 1967);
+    var libro2 = new Libro(2, "978-84-376-0494-7", "Don Quijote de la Mancha", "Miguel de Cervantes", "Clásico", 1605, disponible: false);
+    var usuario1 = new Usuario(1, "1234567890", "Ana Pérez", "ana@example.com");
+    var usuario2 = new Usuario(2, "0987654321", "Luis Gómez", "luis@example.com", activo: false);
+    var prestamo = new Prestamo(
+        1,
+        libro1,
+        usuario1,
+        DateTime.Today.AddDays(-5),
+        DateTime.Today.AddDays(-2));
+
+    Console.WriteLine("--------- RESÚMENES ---------");
+    Console.WriteLine(libro1.ResumenCorto());
+    Console.WriteLine(libro2.ResumenCorto());
+    Console.WriteLine(usuario1.ResumenCorto());
+    Console.WriteLine(usuario2.ResumenCorto());
+    Console.WriteLine(prestamo.ResumenCorto());
+
+    Console.WriteLine("\n--------- DETALLES COMPLETOS ---------");
+    Console.WriteLine(libro1.DetalleCompleto());
+    Console.WriteLine();
+    Console.WriteLine(libro2.DetalleCompleto());
+    Console.WriteLine();
+    Console.WriteLine(usuario1.DetalleCompleto());
+    Console.WriteLine();
+    Console.WriteLine(usuario2.DetalleCompleto());
+    Console.WriteLine();
+    Console.WriteLine(prestamo.DetalleCompleto());
+
+    Console.WriteLine("\n--------- VALIDACIONES ---------");
+    Console.WriteLine($"Libro 1 disponible: {libro1.Disponible}");
+    Console.WriteLine($"Libro 2 disponible: {libro2.Disponible}");
+    Console.WriteLine($"Usuario 1 activo: {usuario1.Activo}");
+    Console.WriteLine($"Usuario 2 activo: {usuario2.Activo}");
+    Console.WriteLine($"Estado del préstamo: {prestamo.Estado}");
+    Console.WriteLine($"Fecha de devolución sin registrar: {prestamo.FechaDevolucion is null}");
+    Console.WriteLine($"Préstamo vencido: {prestamo.EstaVencido()}");
+    Console.WriteLine($"Días transcurridos: {prestamo.DiasTranscurridos()}");
 }
 
 void ShowBooksMenu()
@@ -685,6 +729,9 @@ void MostrarTodo()
                     SaveData();
                 }
                 Console.WriteLine("Gracias por usar la biblioteca.");
+                break;
+            case 7:
+                DemostrarObjetosPrueba();
                 break;
             default:
                 Console.WriteLine("Opción no válida. Intenta nuevamente.");
