@@ -1,5 +1,6 @@
 ﻿using System;
 using Biblioteca_EV06.Models;
+using Biblioteca_EV06.Services;
 
 void ShowMainMenu()
 {
@@ -11,6 +12,7 @@ void ShowMainMenu()
     Console.WriteLine("5. Guardar / Cargar datos");
     Console.WriteLine("6. Salir");
     Console.WriteLine("7. Demostrar modelos (prueba)");
+    Console.WriteLine("8. Demostrar servicios y colecciones (EV08)");
 }
 
 void DemostrarObjetosPrueba()
@@ -53,6 +55,76 @@ void DemostrarObjetosPrueba()
     Console.WriteLine($"Fecha de devolución sin registrar: {prestamo.FechaDevolucion is null}");
     Console.WriteLine($"Préstamo vencido: {prestamo.EstaVencido()}");
     Console.WriteLine($"Días transcurridos: {prestamo.DiasTranscurridos()}");
+}
+
+void DemostrarServiciosYListas()
+{
+    var libro1 = new Libro(1, "978-958-42-1234-5", "Cien años de soledad", "Gabriel García Márquez", "Novela", 1967);
+    var libro2 = new Libro(2, "978-84-376-0494-7", "Don Quijote de la Mancha", "Miguel de Cervantes", "Clásico", 1605, disponible: false);
+    var libro3 = new Libro(3, "978-84-204-1234-8", "La casa de los espíritus", "Isabel Allende", "Novela", 1982);
+    var usuario1 = new Usuario(1, "1234567890", "Ana Pérez", "ana@example.com");
+    var usuario2 = new Usuario(2, "0987654321", "Luis Gómez", "luis@example.com", activo: false);
+
+    Libro[] librosArray = { libro1, libro2 };
+    var librosLista = new List<Libro> { libro1, libro2 };
+    librosLista.Add(libro3);
+    Console.WriteLine("--------- ARRAY VS LIST ---------");
+    Console.WriteLine($"Array: {librosArray.Length} libros; su tamaño es fijo.");
+    Console.WriteLine($"List<T>: {librosLista.Count} libros; puede crecer con Add sin redimensionamiento manual.");
+
+    var libroService = new LibroService();
+    libroService.AgregarLibro(libro1);
+    libroService.AgregarLibro(libro2);
+    libroService.AgregarLibro(libro3);
+
+    var usuarioService = new UsuarioService();
+    usuarioService.AgregarUsuario(usuario1);
+    usuarioService.AgregarUsuario(usuario2);
+
+    var prestamoService = new PrestamoService();
+    prestamoService.AgregarPrestamo(new Prestamo(
+        1, libro1, usuario1, DateTime.Today.AddDays(-2), DateTime.Today.AddDays(5)));
+    prestamoService.AgregarPrestamo(new Prestamo(
+        2,
+        libro2,
+        usuario1,
+        DateTime.Today.AddDays(-10),
+        DateTime.Today.AddDays(-3),
+        estado: EstadoPrestamo.Vencido));
+    prestamoService.AgregarPrestamo(new Prestamo(
+        3,
+        libro3,
+        usuario2,
+        DateTime.Today.AddDays(-8),
+        DateTime.Today.AddDays(-3),
+        DateTime.Today.AddDays(-4),
+        EstadoPrestamo.Devuelto));
+
+    Console.WriteLine("\n--------- BÚSQUEDAS ---------");
+    Console.WriteLine($"Libro por ISBN: {libroService.BuscarPorIsbn(libro1.Isbn)?.Titulo ?? "No encontrado"}");
+    Console.WriteLine($"Libros por autor 'Isabel': {libroService.BuscarPorAutor("Isabel").Count}");
+    Console.WriteLine($"Usuario por documento: {usuarioService.BuscarPorDocumento(usuario1.Documento)?.Nombre ?? "No encontrado"}");
+    Console.WriteLine($"Préstamo por ID: {prestamoService.BuscarPorId(1)?.ResumenCorto() ?? "No encontrado"}");
+    Console.WriteLine($"Préstamos activos por estado: {prestamoService.BuscarPorEstado(EstadoPrestamo.Activo).Count}");
+
+    Console.WriteLine("\n--------- ORDENACIONES ---------");
+    Console.WriteLine("Libros por título: " + string.Join(", ", libroService.OrdenarPorTitulo().Select(libro => libro.Titulo)));
+    Console.WriteLine("Usuarios por nombre: " + string.Join(", ", usuarioService.OrdenarPorNombre().Select(usuario => usuario.Nombre)));
+    Console.WriteLine("Préstamos por fecha límite: " +
+                      string.Join(", ", prestamoService.OrdenarPorFechaVencimiento().Select(prestamo => prestamo.Id)));
+
+    Console.WriteLine("\n--------- KPIs ---------");
+    Console.WriteLine($"Libros: {libroService.TotalLibros()} total, " +
+                      $"{libroService.TotalLibrosDisponibles()} disponibles, " +
+                      $"{libroService.TotalLibrosPrestados()} prestados.");
+    Console.WriteLine($"Usuarios: {usuarioService.TotalUsuarios()} total, " +
+                      $"{usuarioService.TotalUsuariosActivos()} activos, " +
+                      $"{usuarioService.TotalUsuariosInactivos()} inactivos.");
+    Console.WriteLine($"Préstamos: {prestamoService.TotalPrestamos()} total, " +
+                      $"{prestamoService.TotalPrestamosActivos()} activos, " +
+                      $"{prestamoService.TotalPrestamosVencidos()} vencidos, " +
+                      $"{prestamoService.TotalPrestamosDevueltos()} devueltos.");
+    Console.WriteLine($"Promedio de días de préstamo: {prestamoService.PromedioDiasPrestamo():F2}");
 }
 
 void ShowBooksMenu()
@@ -732,6 +804,9 @@ void MostrarTodo()
                 break;
             case 7:
                 DemostrarObjetosPrueba();
+                break;
+            case 8:
+                DemostrarServiciosYListas();
                 break;
             default:
                 Console.WriteLine("Opción no válida. Intenta nuevamente.");

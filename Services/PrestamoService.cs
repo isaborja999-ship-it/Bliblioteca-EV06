@@ -37,4 +37,39 @@ public class PrestamoService
     {
         return prestamos.OrderBy(prestamo => prestamo.FechaVencimiento).ToList();
     }
+
+    public int TotalPrestamos()
+    {
+        return prestamos.Count;
+    }
+
+    public int TotalPrestamosActivos()
+    {
+        return prestamos.Count(prestamo =>
+            prestamo.Estado == EstadoPrestamo.Activo &&
+            prestamo.FechaDevolucion is null &&
+            !prestamo.EstaVencido());
+    }
+
+    public int TotalPrestamosVencidos()
+    {
+        return prestamos.Count(prestamo =>
+            prestamo.FechaDevolucion is null &&
+            (prestamo.Estado == EstadoPrestamo.Vencido ||
+             (prestamo.Estado == EstadoPrestamo.Activo && prestamo.EstaVencido())));
+    }
+
+    public int TotalPrestamosDevueltos()
+    {
+        return prestamos.Count(prestamo =>
+            prestamo.Estado == EstadoPrestamo.Devuelto ||
+            prestamo.FechaDevolucion is not null);
+    }
+
+    public double PromedioDiasPrestamo()
+    {
+        return prestamos.Count == 0
+            ? 0
+            : prestamos.Average(prestamo => prestamo.DiasTranscurridos());
+    }
 }
