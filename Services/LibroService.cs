@@ -49,4 +49,19 @@ public class LibroService
     {
         return libros.OrderBy(libro => libro.Titulo, StringComparer.OrdinalIgnoreCase).ToList();
     }
+
+    public int TotalLibros()
+    {
+        return libros.Count;
+    }
+
+    public int TotalLibrosDisponibles()
+    {
+        return libros.Count(libro => libro.Disponible);
+    }
+
+    public int TotalLibrosPrestados()
+    {
+        return libros.Count(libro => !libro.Disponible);
+    }
 }
